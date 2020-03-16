@@ -30,9 +30,8 @@ tls-priorities = "NORMAL:%SERVER_PRECEDENCE:%COMPAT:-VERS-SSL3.0" -> change to -
 ```
 save and restart VPN using
 * `sudo systemctl restart ocserv`
-
-sudo cp /lib/systemd/system/ocserv.service /etc/systemd/system/ocserv.service
-sudo nano /etc/systemd/system/ocserv.service
+* `sudo cp /lib/systemd/system/ocserv.service /etc/systemd/system/ocserv.service`
+* `sudo nano /etc/systemd/system/ocserv.service`
 ```
 Requires=ocserv.socket -> comment
 Also=ocserv.socket -> comment
