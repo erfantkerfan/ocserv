@@ -57,6 +57,8 @@ with this command find the name of your network(interface):
 * `ip addr`
 * `sudo nano /etc/ufw/before.rules`
 paste this at the end of the file and replace ens160 with your network(interface)
+PASTE IT AT THE END! I KNOW THERE WOULD BE A DUPLICATE IN FILE!
+I'M WISE! TRUST ME!
 ```
 # NAT table rules
 *nat
