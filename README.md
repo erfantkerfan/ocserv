@@ -61,7 +61,7 @@ paste this at the end of the file and replace ens160 with your network(interface
 # NAT table rules
 *nat
 :POSTROUTING ACCEPT [0:0]
--A POSTROUTING -o ens3 -j MASQUERADE
+-A POSTROUTING -o ens160 -j MASQUERADE
 
 # End each table with the 'COMMIT' line or these rules won't be processed
 COMMIT
