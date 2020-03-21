@@ -140,8 +140,10 @@ signing_key
 encryption_key
 ```
 * `sudo certtool --generate-certificate --load-privkey client-privkey.pem --load-ca-certificate ca-cert.pem --load-ca-privkey ca-privkey.pem --template client-cert.cfg --outfile client-cert.pem`
+
 foe AES:
 * `sudo certtool --to-p12 --load-privkey client-privkey.pem --load-certificate client-cert.pem --pkcs-cipher aes-256 --outfile client.p12 --outder`
+
 for 3DES:
 * `sudo certtool --to-p12 --load-privkey client-privkey.pem --load-certificate client-cert.pem --pkcs-cipher 3des-pkcs12 --outfile ios-client.p12 --outder`
 * `sudo nano /etc/ocserv/ocserv.conf`
