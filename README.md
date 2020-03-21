@@ -73,3 +73,81 @@ COMMIT
 ```
 @daily certbot renew --quiet && systemctl restart ocserv -> add this
 ```
+
+
+# ocserv CA (optional)
+* `sudo apt install gnutls-bin`
+* `sudo mkdir /etc/ocserv/ssl/ && cd /etc/ocserv/ssl/`
+* `sudo certtool --generate-privkey --outfile ca-privkey.pem`
+* `sudo nano ca-cert.cfg`
+add these line:
+```
+# X.509 Certificate options
+
+# The organization of the subject.
+organization = "yourVPNdomain.com"
+
+# The common name of the certificate owner.
+cn = "yourVPNdomain.com"
+
+# The serial number of the certificate.
+serial = 001
+
+# In how many days, counting from today, this certificate will expire. Use -1 if there is no expiration date.
+expiration_days = -1
+
+# Whether this is a CA certificate or not
+ca
+
+# Whether this certificate will be used to sign data
+signing_key
+
+# Whether this key will be used to sign other certificates.
+cert_signing_key
+
+# Whether this key will be used to sign CRLs.
+crl_signing_key
+```
+* `sudo certtool --generate-self-signed --load-privkey ca-privkey.pem --template ca-cert.cfg --outfile ca-cert.pem`
+* `sudo certtool --generate-privkey --outfile client-privkey.pem`
+
+for every user do this:
+
+* `sudo nano client-cert.cfg`
+```
+# X.509 Certificate options
+# The organization of the subject.
+organization = "yourVPNdomain.com"
+
+# The common name of the certificate owner.
+cn = "username"
+
+# A user id of the certificate owner.
+uid = "username"
+
+# In how many days, counting from today, this certificate will expire. Use -1 if there is no expiration date.
+expiration_days = 3650
+
+# Whether this certificate will be used for a TLS server
+tls_www_client
+
+# Whether this certificate will be used to sign data
+signing_key
+
+# Whether this certificate will be used to encrypt data (needed
+# in TLS RSA ciphersuites). Note that it is preferred to use different
+# keys for encryption and signing.
+encryption_key
+```
+* `sudo certtool --generate-certificate --load-privkey client-privkey.pem --load-ca-certificate ca-cert.pem --load-ca-privkey ca-privkey.pem --template client-cert.cfg --outfile client-cert.pem`
+foe AES:
+* `sudo certtool --to-p12 --load-privkey client-privkey.pem --load-certificate client-cert.pem --pkcs-cipher aes-256 --outfile client.p12 --outder`
+for 3DES:
+* `sudo certtool --to-p12 --load-privkey client-privkey.pem --load-certificate client-cert.pem --pkcs-cipher 3des-pkcs12 --outfile ios-client.p12 --outder`
+* `sudo nano /etc/ocserv/ocserv.conf`
+```
+auth = "plain[passwd=/etc/ocserv/ocpasswd]" -> change to -> enable-auth = "plain[passwd=/etc/ocserv/ocpasswd]"
+auth = "certificate" -> uncomment
+ca-cert = /etc/ssl/certs/ssl-cert-snakeoil.pem -> chnage to -> ca-cert = /etc/ocserv/ssl/ca-cert.pem
+```
+* `sudo systemctl restart ocserv`
