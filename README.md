@@ -1,8 +1,8 @@
 # ocserv
 
 * `sudo apt install ocserv`
-* `sudo apt install software-properties-common`
-* `sudo add-apt-repository ppa:certbot/certbot`
+* `sudo apt install software-properties-common # this part may need change acording to https://certbot.eff.org/`
+* `sudo add-apt-repository ppa:certbot/certbot # this part may need change acording to https://certbot.eff.org/`
 * `sudo apt update`
 * `sudo apt upgrade`
 * `sudo apt install certbot`
@@ -48,8 +48,8 @@ net.core.default_qdisc=fq -> add to end
 net.ipv4.tcp_congestion_control=bbr -> add to end
 ```
 * `sudo sysctl -p`
-* `sudo ufw allow 22
-* `sudo nano /etc/default/ufw
+* `sudo ufw allow 22`
+* `sudo nano /etc/default/ufw`
 ```
 DEFAULT_FORWARD_POLICY="DROP" -> change to -> DEFAULT_FORWARD_POLICY="ACCEPT"
 ```
@@ -69,6 +69,7 @@ I'M WISE! TRUST ME!
 # End each table with the 'COMMIT' line or these rules won't be processed
 COMMIT
 ```
+* `ufw enable # dont forget to add all the ports you need before doing this`
 * `sudo crontab -e`
 ```
 @daily certbot renew --quiet && systemctl restart ocserv -> add this
